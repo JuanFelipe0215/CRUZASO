@@ -1,4 +1,4 @@
-/* CRUDTASK - Base styles (Bootstrap 5 + small custom layer) */
+
 
 :root{
   --ct-bg: #f6f8fb;
@@ -6,7 +6,7 @@
   --ct-text: #0f172a;
   --ct-muted: #64748b;
   --ct-border: #e5e7eb;
-  --ct-primary: #1d4ed8; /* bootstrap primary-ish */
+  --ct-primary: #1d4ed8; 
   --ct-sidebar: #ffffff;
   --ct-sidebar-active: #eef2ff;
 }
@@ -18,6 +18,7 @@ html, body {
 body{
   background: var(--ct-bg);
   color: var(--ct-text);
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
 }
 
 a { text-decoration: none; }
