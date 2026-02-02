@@ -1,0 +1,25 @@
+{
+  "users": [
+    {
+      "id": "d863",
+      "names": "juan",
+      "email": "juan131@gmail.com",
+      "password": "juan123",
+      "roles": "admin"
+    },
+    {
+      "id": "e38b",
+      "names": "Juan Felipe",
+      "email": "juanfe131@gmail.com",
+      "password": "123456",
+      "roles": "user"
+    },
+    {
+      "id": "a981",
+      "names": "juan",
+      "email": "j@gmail.com",
+      "password": "juan123",
+      "roles": "user"
+    }
+  ]
+}
