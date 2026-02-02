@@ -203,7 +203,7 @@ a{
 }
 
 .price{
-  color: var(--ra-green);
+  color: var(--ra-blue);
   font-weight: 800;
 }
 
@@ -342,7 +342,7 @@ a{
   top: 0;
   bottom: 0;
   width: 5px;
-  background: var(--ra-green);
+  background: var(--ra-blue);
   border-top-left-radius: 14px;
   border-bottom-left-radius: 14px;
 }
@@ -357,7 +357,7 @@ a{
 }
 
 .pagination.ra-pagination .page-item.active .page-link{
-  background: var(--ra-green);
+  background: var(--ra-blue);
   color: #0b0b0b;
   box-shadow: 0 12px 24px rgba(89, 225, 110, .35);
 }

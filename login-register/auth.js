@@ -71,7 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
             setTimeout(() => {
                 window.location.href =
                     searchUser.roles === "admin"
-                        ? "../admin/admin-dasboard.html"
+                        ? "../admin/admin-dashboard.html"
                         : "../user/index.html";
             }, 700);
         } catch (error) {

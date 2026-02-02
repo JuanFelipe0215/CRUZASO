@@ -46,7 +46,7 @@ function verificationUser() {
     };
 
     if (session.roles !== "user") {
-        window.location.href = "../admin/admin-dasboard.html";
+        window.location.href = "../admin/admin-dashboard.html";
     };
 
     return session;
@@ -82,7 +82,7 @@ function Authenticated() {
     if (!session) return;
 
     if (session.roles === "admin") {
-        window.location.href = "../admin/admin-dasboard.html";
+        window.location.href = "../admin/admin-dashboard.html";
     } else {
         window.location.href = "../user/index.html";
     }
