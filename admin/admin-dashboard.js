@@ -183,11 +183,20 @@ document.addEventListener("DOMContentLoaded", () => {
     if (target.dataset.action === "status") {
       const id = target.dataset.id;
       try {
+        await Swal.fire({
+          title: "success",
+          text: "Estado cambiado con exito",
+          icon: "success",
+        });
         await apiPatch(`/tasks/${id}`, { status: target.value });
         await load();
       } catch (err) {
         console.error(err);
-        alert("No se pudo cambiar el estado");
+        await Swal.fire({
+          title: "Error",
+          text: "No se pudo cambiar el estado",
+          icon: "error",
+        });
       }
     }
   });
@@ -202,11 +211,20 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!ok) return;
 
       try {
+        await Swal.fire({
+          title: "success",
+          text: "Tarea eliminada con exito",
+          icon: "success",
+        });
         await apiDelete(`/tasks/${id}`);
         await load();
       } catch (err) {
         console.error(err);
-        alert("No se pudo eliminar");
+        await Swal.fire({
+          title: "Error",
+          text: "No se pudo eliminar la tarea",
+          icon: "error",
+        });
       }
     }
   });

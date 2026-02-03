@@ -31,26 +31,15 @@
   ],
   "tasks": [
     {
-      "id": "de95",
-      "title": "Terminar Prueba de Riwi",
-      "category": "Desarrollo",
-      "userId": "e38b",
-      "priority": "high",
-      "status": "completed",
-      "dueDate": "2026-02-02",
-      "description": "Terminar de Implementar las Funcionalidades de user y admin, esta durito jsjsjsjsj",
-      "createdAt": "2026-02-03T01:14:24.216Z"
-    },
-    {
-      "id": "2157",
-      "title": "Terminar portafolio",
-      "category": "riwi",
-      "userId": "e38b",
-      "priority": "medium",
-      "status": "pending",
-      "dueDate": "2026-02-04",
-      "description": "Necesito Terminar el portafolio para el miercoles",
-      "createdAt": "2026-02-03T01:15:25.994Z"
+      "id": "a4b4",
+      "title": "nueva funcion al proyecto",
+      "category": "desarrollo",
+      "userId": "5365",
+      "priority": "low",
+      "status": "in progress",
+      "dueDate": "2026-02-07",
+      "description": "debo implementar mejoras al proyecto poniendolo mas bonito",
+      "createdAt": "2026-02-03T01:19:43.634Z"
     },
     {
       "id": "a4b1",
@@ -58,7 +47,7 @@
       "category": "desarrollo",
       "userId": "5365",
       "priority": "low",
-      "status": "pending",
+      "status": "in progress",
       "dueDate": "2026-02-07",
       "description": "debo implementar mejoras al proyecto poniendolo mas bonito",
       "createdAt": "2026-02-03T01:19:43.634Z"

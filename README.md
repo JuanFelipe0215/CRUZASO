@@ -1,31 +1,36 @@
 # CRUDZASO
-Este proyecto cumple los puntos del enunciado:
-- Registro, login, sesión (LocalStorage)
+## Juan Felipe Cardona Rios
+## Clan: McCarthy
+
+This project fulfills the requirements outlined in the statement:
+- Registration, login, session (LocalStorage)
 - Roles (user / admin)
-- JSON Server como API falsa
-- CRUD de tareas
-- User solo ve sus tareas
-- Admin ve todas y tiene métricas
-- Rutas protegidas por rol
+- JSON Server as a mock API
+- CRUD operations for tasks
+- User only sees their own tasks
+- Admin sees all tasks and has access to metrics
+- Routes protected by role
 
-## 1) Requisitos
-- Tener Node.js instalado (para usar JSON Server)
+## 1) Requirements
+- Node.js must be installed (to use JSON Server)
 
-## 2) Levantar la API (JSON Server)
-En la carpeta del proyecto:
+## 2) Setting up the API (JSON Server)
+In the project folder:
 
-### COMO HACERLO
+### HOW TO DO IT
 ```bash
-npx json-server --watch db.json --port 3000
+npm i json-server
+npx json-server db.json
 ```
 
-Si te pregunta algo de instalar, acepta.
+If it asks you to install anything, accept.
 
-La API queda en:
+
+The API is located at:
 - http://localhost:3000/users
 - http://localhost:3000/tasks
 
-## 3) Usuarios de prueba
+## 3) Test Users
 - Admin: juan131@gmail.com / juan123
-- User:  j@gmail.com / juan123
-- De igual manera tu puedes crear tu propio perfil o los que quieras pero estos ingresaran como usuario.
+- User: j@gmail.com / juan123
+- You can also create your own profile or as many as you want, but these will log in as users.
