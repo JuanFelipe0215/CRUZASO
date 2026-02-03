@@ -1,0 +1,56 @@
+{
+  "users": [
+    {
+      "id": "d863",
+      "names": "juan",
+      "email": "juan131@gmail.com",
+      "password": "juan123",
+      "roles": "admin"
+    },
+    {
+      "id": "e38b",
+      "names": "Juan Felipe",
+      "email": "juanfe131@gmail.com",
+      "password": "123456",
+      "roles": "user"
+    },
+    {
+      "id": "a981",
+      "names": "juan",
+      "email": "j@gmail.com",
+      "password": "juan123",
+      "roles": "user"
+    },
+    {
+      "id": "5365",
+      "names": "Carlos Enrrique",
+      "email": "carlos0215@gmail.com",
+      "password": "carlos123",
+      "roles": "user"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "a4b4",
+      "title": "nueva funcion al proyecto",
+      "category": "desarrollo",
+      "userId": "5365",
+      "priority": "low",
+      "status": "in progress",
+      "dueDate": "2026-02-07",
+      "description": "debo implementar mejoras al proyecto poniendolo mas bonito",
+      "createdAt": "2026-02-03T01:19:43.634Z"
+    },
+    {
+      "id": "a4b1",
+      "title": "nueva funcion al proyecto",
+      "category": "desarrollo",
+      "userId": "5365",
+      "priority": "low",
+      "status": "in progress",
+      "dueDate": "2026-02-07",
+      "description": "debo implementar mejoras al proyecto poniendolo mas bonito",
+      "createdAt": "2026-02-03T01:19:43.634Z"
+    }
+  ]
+}

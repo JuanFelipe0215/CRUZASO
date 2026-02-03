@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUDZASO | Register</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="../styles/style.css">
+</head>
+
+<body>
+    <main class="min-vh-100 d-flex flex-column justify-content-center align-items-center py-5">
+
+        <div class="text-center d-flex align-items-center mb-4">
+            <img src="../images/Background.png" width="60px" alt="">
+            <h1 class="h3 fw-black mb-1 login-title">CRUZASO</h1>
+        </div>
+
+        <div class="card card-soft shadow-lg p-4 p-md-5 login-card">
+            <div class="text-center">
+                <h1 class="h2 fw-black mb-1 login-title">Create account</h1>
+                <p class="text-muted mb-4">Join the academic performance platform today</p>
+            </div>
+
+            <form>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Full Name</label>
+                    <div class="input-group input-group-lg">
+                        <span class="input-group-text"><i class="bi bi-person"></i></span>
+                        <input id="fullName" name="fullName" type="text" class="form-control" placeholder="John Doe">
+                        <div class="invalid-feedback">El nombre es obligatorio.</div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Email Address</label>
+                    <div class="input-group input-group-lg">
+                        <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                        <input id="email" name="email" type="email" class="form-control"
+                            placeholder="student@university.edu" required>
+                        <div class="invalid-feedback">Escribe un email válido.</div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Password</label>
+                    <div class="input-group input-group-lg">
+                        <span class="input-group-text"><i class="bi bi-unlock2"></i></span>
+                        <input id="password" name="password" type="password" class="form-control"
+                            placeholder="Create a password" required minlength="6">
+                        <div class="invalid-feedback">La contraseña es obligatoria (mín 6).</div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Confirm Password</label>
+                    <div class="input-group input-group-lg">
+                        <span class="input-group-text"><i class="bi bi-unlock2"></i></span>
+                        <input id="confirmPassword" name="confirmPassword" type="password" class="form-control"
+                            placeholder="Confirm password" required minlength="6">
+                        <div class="invalid-feedback">La contraseña no coincide</div>
+                    </div>
+                </div>
+
+
+
+                <button id="btnRegister" type="button" class="btn btn-brand btn-lg w-100 py-3">
+                    Register
+                </button>
+
+                <p class="text-center text-muted mt-4 mb-0">
+                    Don't have an account?
+                    <a class="fw-bold text-decoration-none text-blue" href="./login.html">Sign In</a>
+                </p>
+            </form>
+        </div>
+    </main>
+
+    <script src="../guards/guard.js"></script>
+    <script>
+        Authenticated();
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="./register.js"></script>
+
+</body>
+
+</html>
