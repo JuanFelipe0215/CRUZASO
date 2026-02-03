@@ -1,42 +1,30 @@
 const API_URL = "http://localhost:3000";
 
+
+
 document.addEventListener("DOMContentLoaded", () => {
   const session = requireAdmin();
   if (!session) return;
 
   const topbar = document.getElementById("ctTopbar");
-  const adminTotal = document.getElementById("adminTotal");
-  const adminCompleted = document.getElementById("adminCompleted");
-  const adminPending = document.getElementById("adminPending");
-  const adminProgress = document.getElementById("adminProgress");
-  const adminUsers = document.getElementById("adminUsers");
+  const q = document.getElementById("q");
+  const statusFilter = document.getElementById("statusFilter");
+  const priorityFilter = document.getElementById("priorityFilter");
   const tableBody = document.getElementById("tableBody");
+
+  let allTasks = [];
+  let allUsers = [];
 
   function renderTopbar() {
     topbar.innerHTML = `
       <nav class="navbar navbar-expand bg-white border rounded-3 px-3 py-2 shadow-sm">
-        <div class="d-flex align-items-center gap-2">
-          <span class="badge text-bg-primary">admin</span>
-          <span class="fw-semibold">${session.names}</span>
-          <span class="text-secondary small d-none d-md-inline">(${session.email})</span>
-        </div>
-
-        <div class="ms-auto dropdown">
-          <button class="btn btn-outline-secondary btn-sm dropdown-toggle" data-bs-toggle="dropdown">
-            <i class="bi bi-person-circle me-1"></i> Cuenta
-          </button>
-          <ul class="dropdown-menu dropdown-menu-end">
-            <li><a class="dropdown-item" href="./admin-dashboard.html"><i class="bi bi-speedometer2 me-2"></i>Dashboard</a></li>
-            <li><a class="dropdown-item" href="./tasks.html"><i class="bi bi-list-check me-2"></i>Tasks</a></li>
-            <li><a class="dropdown-item" href="./users.html"><i class="bi bi-people me-2"></i>Users</a></li>
-            <li><a class="dropdown-item" href="./profile.html"><i class="bi bi-person me-2"></i>Profile</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><button class="dropdown-item text-danger" id="btnLogout"><i class="bi bi-box-arrow-right me-2"></i>Logout</button></li>
-          </ul>
-        </div>
+        <span class="fw-semibold">Tasks (Admin)</span>
+        <span class="ms-auto me-2 small text-secondary">${session.names}</span>
+        <button class="btn btn-outline-danger btn-sm" id="btnLogout">
+          <i class="bi bi-box-arrow-right me-1"></i> Logout
+        </button>
       </nav>
     `;
-
     document.getElementById("btnLogout").addEventListener("click", () => logout());
   }
 
@@ -51,7 +39,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function formatDate(dateStr) {
     if (!dateStr) return "-";
-
     const [y, m, d] = dateStr.split("-");
     if (!y || !m || !d) return dateStr;
     return `${d}/${m}/${y}`;
@@ -97,34 +84,27 @@ document.addEventListener("DOMContentLoaded", () => {
     return true;
   }
 
-  function computeMetrics(tasks, users) {
-    const total = tasks.length;
-    const completed = tasks.filter((t) => t.status === "completed").length;
-    const pending = tasks.filter((t) => t.status === "pending").length;
-    const progress = total > 0 ? Math.round((completed / total) * 100) : 0;
+  function applyFilters() {
+    const text = q.value.trim().toLowerCase();
+    const sf = statusFilter.value;
+    const pf = priorityFilter.value;
 
-    adminTotal.textContent = total;
-    adminCompleted.textContent = completed;
-    adminPending.textContent = pending;
-    adminProgress.textContent = `${progress}%`;
-    adminUsers.textContent = users.length;
+    return allTasks.filter((t) => {
+      const haystack = `${t.title || ""} ${t.category || ""}`.toLowerCase();
+      const okText = !text || haystack.includes(text);
+      const okStatus = !sf || t.status === sf;
+      const okPriority = !pf || (t.priority || "").toLowerCase() === pf;
+      return okText && okStatus && okPriority;
+    });
   }
 
-  function renderTable(tasks, users) {
-    const userMap = new Map(users.map((u) => [u.id, u]));
+  function renderTable(tasks) {
+    const userMap = new Map(allUsers.map((u) => [u.id, u]));
 
-    const sorted = [...tasks].sort((a, b) => {
-      const ad = a.dueDate || "9999-12-31";
-      const bd = b.dueDate || "9999-12-31";
-      return ad.localeCompare(bd);
-    });
-
-    const top = sorted.slice(0, 6);
-
-    tableBody.innerHTML = top
+    tableBody.innerHTML = tasks
       .map((t) => {
-        const assignee = userMap.get(t.userId);
-        const assigneeName = assignee ? assignee.names : "(Sin usuario)";
+        const u = userMap.get(t.userId);
+        const assignee = u ? u.names : "(Sin usuario)";
 
         return `
           <tr>
@@ -132,7 +112,7 @@ document.addEventListener("DOMContentLoaded", () => {
               <div class="fw-semibold">${esc(t.title)}</div>
               <div class="text-secondary small">${esc(t.category || "")}</div>
             </td>
-            <td>${esc(assigneeName)}</td>
+            <td>${esc(assignee)}</td>
             <td>${statusSelect(t)}</td>
             <td>${priorityBadge(t.priority)}</td>
             <td>${formatDate(t.dueDate)}</td>
@@ -149,33 +129,39 @@ document.addEventListener("DOMContentLoaded", () => {
       })
       .join("");
 
-    if (top.length === 0) {
+    if (tasks.length === 0) {
       tableBody.innerHTML = `
         <tr>
-          <td colspan="6" class="text-center text-secondary py-4">There are no tasks yet.</td>
+          <td colspan="6" class="text-center text-secondary py-4">No hay resultados.</td>
         </tr>
       `;
     }
+  }
+
+  function refresh() {
+    renderTable(applyFilters());
   }
 
   async function load() {
     try {
-      const [tasks, users] = await Promise.all([apiGet("/tasks"), apiGet("/users")]);
-      computeMetrics(tasks, users);
-      renderTable(tasks, users);
+      [allTasks, allUsers] = await Promise.all([apiGet("/tasks"), apiGet("/users")]);
+      refresh();
     } catch (err) {
       console.error(err);
       tableBody.innerHTML = `
         <tr>
-          <td colspan="6" class="text-center text-danger py-4">
-            Error cargando datos. ¿JSON Server está corriendo en http://localhost:3000?
-          </td>
+          <td colspan="6" class="text-center text-danger py-4">Error cargando datos. ¿JSON Server está corriendo?</td>
         </tr>
       `;
     }
   }
 
- 
+
+  [q, statusFilter, priorityFilter].forEach((el) => el.addEventListener("input", refresh));
+  statusFilter.addEventListener("change", refresh);
+  priorityFilter.addEventListener("change", refresh);
+
+
   tableBody.addEventListener("change", async (e) => {
     const target = e.target;
     if (!(target instanceof HTMLSelectElement)) return;
@@ -185,8 +171,7 @@ document.addEventListener("DOMContentLoaded", () => {
       try {
         await apiPatch(`/tasks/${id}`, { status: target.value });
         await load();
-      } catch (err) {
-        console.error(err);
+      } catch {
         alert("No se pudo cambiar el estado");
       }
     }
@@ -204,8 +189,7 @@ document.addEventListener("DOMContentLoaded", () => {
       try {
         await apiDelete(`/tasks/${id}`);
         await load();
-      } catch (err) {
-        console.error(err);
+      } catch {
         alert("No se pudo eliminar");
       }
     }

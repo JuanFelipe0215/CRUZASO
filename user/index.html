@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CRUDZASO | My Tasks</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+
+<body class="bg-light">
+  <div class="container-fluid">
+    <div class="row min-vh-100">
+
+
+      <aside class="col-12 col-lg-3 col-xl-2 bg-white border-end p-3">
+        <div class="d-flex align-items-center justify-content-center justify-content-lg-start gap-2 mb-4">
+          <img src="../images/Background.png" width="44" alt="Logo">
+          <div class="fw-bold">CRUDZASO</div>
+        </div>
+
+        <nav class="nav nav-pills flex-column gap-2">
+          <a class="nav-link active" href="./index.html"><i class="bi bi-list-check me-2"></i> My Tasks</a>
+          <a class="nav-link text-dark" href="./profile.html"><i class="bi bi-person me-2"></i> Profile</a>
+        </nav>
+      </aside>
+
+
+      <main class="col-12 col-lg-9 col-xl-10 p-3 p-md-4">
+        <header id="ctTopbar" class="mb-3"></header>
+
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
+          <div>
+            <h1 class="h4 fw-bold mb-1">My Tasks</h1>
+            <div class="text-secondary">View, edit, and organize all academic tasks in one place.</div>
+          </div>
+          <a class="btn btn-primary" href="./task-form.html"><i class="bi bi-plus-lg me-1"></i> New Task</a>
+        </div>
+
+        <section class="row g-3 mb-3">
+          <div class="col-12 col-md-4 col-xl-3">
+            <div class="card shadow-sm">
+              <div class="card-body">
+                <div class="text-secondary small">Total</div>
+                <div id="mTotal" class="fs-2 fw-bold">0</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-md-4 col-xl-3">
+            <div class="card shadow-sm">
+              <div class="card-body">
+                <div class="text-secondary small">Completed</div>
+                <div id="mCompleted" class="fs-2 fw-bold">0</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-md-4 col-xl-3">
+            <div class="card shadow-sm">
+              <div class="card-body">
+                <div class="text-secondary small">Pending</div>
+                <div id="mPending" class="fs-2 fw-bold">0</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div class="card shadow-sm">
+          <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+              <thead class="table-light">
+                <tr>
+                  <th>Task</th>
+                  <th style="width:190px;">Status</th>
+                  <th style="width:120px;">Priority</th>
+                  <th style="width:140px;">Due date</th>
+                  <th style="width:120px;">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="tableBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <script src="../guards/guard.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="./tasks.js"></script>
+</body>
+</html>

@@ -1,38 +1,34 @@
 const API_URL = "http://localhost:3000";
 
+// user/tasks.js
+
 document.addEventListener("DOMContentLoaded", () => {
-  const session = requireAdmin();
+  const session = requireUser();
   if (!session) return;
 
   const topbar = document.getElementById("ctTopbar");
-  const adminTotal = document.getElementById("adminTotal");
-  const adminCompleted = document.getElementById("adminCompleted");
-  const adminPending = document.getElementById("adminPending");
-  const adminProgress = document.getElementById("adminProgress");
-  const adminUsers = document.getElementById("adminUsers");
+  const mTotal = document.getElementById("mTotal");
+  const mCompleted = document.getElementById("mCompleted");
+  const mPending = document.getElementById("mPending");
   const tableBody = document.getElementById("tableBody");
+
+  let myTasks = [];
 
   function renderTopbar() {
     topbar.innerHTML = `
       <nav class="navbar navbar-expand bg-white border rounded-3 px-3 py-2 shadow-sm">
         <div class="d-flex align-items-center gap-2">
-          <span class="badge text-bg-primary">admin</span>
+          <span class="badge text-bg-secondary">user</span>
           <span class="fw-semibold">${session.names}</span>
-          <span class="text-secondary small d-none d-md-inline">(${session.email})</span>
         </div>
 
-        <div class="ms-auto dropdown">
-          <button class="btn btn-outline-secondary btn-sm dropdown-toggle" data-bs-toggle="dropdown">
-            <i class="bi bi-person-circle me-1"></i> Cuenta
+        <div class="ms-auto d-flex align-items-center gap-2">
+          <a class="btn btn-outline-secondary btn-sm" href="./profile.html">
+            <i class="bi bi-person me-1"></i> Profile
+          </a>
+          <button class="btn btn-outline-danger btn-sm" id="btnLogout">
+            <i class="bi bi-box-arrow-right me-1"></i> Logout
           </button>
-          <ul class="dropdown-menu dropdown-menu-end">
-            <li><a class="dropdown-item" href="./admin-dashboard.html"><i class="bi bi-speedometer2 me-2"></i>Dashboard</a></li>
-            <li><a class="dropdown-item" href="./tasks.html"><i class="bi bi-list-check me-2"></i>Tasks</a></li>
-            <li><a class="dropdown-item" href="./users.html"><i class="bi bi-people me-2"></i>Users</a></li>
-            <li><a class="dropdown-item" href="./profile.html"><i class="bi bi-person me-2"></i>Profile</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><button class="dropdown-item text-danger" id="btnLogout"><i class="bi bi-box-arrow-right me-2"></i>Logout</button></li>
-          </ul>
         </div>
       </nav>
     `;
@@ -51,7 +47,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function formatDate(dateStr) {
     if (!dateStr) return "-";
-
     const [y, m, d] = dateStr.split("-");
     if (!y || !m || !d) return dateStr;
     return `${d}/${m}/${y}`;
@@ -97,42 +92,25 @@ document.addEventListener("DOMContentLoaded", () => {
     return true;
   }
 
-  function computeMetrics(tasks, users) {
-    const total = tasks.length;
-    const completed = tasks.filter((t) => t.status === "completed").length;
-    const pending = tasks.filter((t) => t.status === "pending").length;
-    const progress = total > 0 ? Math.round((completed / total) * 100) : 0;
+  function computeMetrics() {
+    const total = myTasks.length;
+    const completed = myTasks.filter((t) => t.status === "completed").length;
+    const pending = myTasks.filter((t) => t.status === "pending").length;
 
-    adminTotal.textContent = total;
-    adminCompleted.textContent = completed;
-    adminPending.textContent = pending;
-    adminProgress.textContent = `${progress}%`;
-    adminUsers.textContent = users.length;
+    mTotal.textContent = total;
+    mCompleted.textContent = completed;
+    mPending.textContent = pending;
   }
 
-  function renderTable(tasks, users) {
-    const userMap = new Map(users.map((u) => [u.id, u]));
-
-    const sorted = [...tasks].sort((a, b) => {
-      const ad = a.dueDate || "9999-12-31";
-      const bd = b.dueDate || "9999-12-31";
-      return ad.localeCompare(bd);
-    });
-
-    const top = sorted.slice(0, 6);
-
-    tableBody.innerHTML = top
+  function renderTable() {
+    tableBody.innerHTML = myTasks
       .map((t) => {
-        const assignee = userMap.get(t.userId);
-        const assigneeName = assignee ? assignee.names : "(Sin usuario)";
-
         return `
           <tr>
             <td>
               <div class="fw-semibold">${esc(t.title)}</div>
               <div class="text-secondary small">${esc(t.category || "")}</div>
             </td>
-            <td>${esc(assigneeName)}</td>
             <td>${statusSelect(t)}</td>
             <td>${priorityBadge(t.priority)}</td>
             <td>${formatDate(t.dueDate)}</td>
@@ -149,10 +127,10 @@ document.addEventListener("DOMContentLoaded", () => {
       })
       .join("");
 
-    if (top.length === 0) {
+    if (myTasks.length === 0) {
       tableBody.innerHTML = `
         <tr>
-          <td colspan="6" class="text-center text-secondary py-4">There are no tasks yet.</td>
+          <td colspan="5" class="text-center text-secondary py-4">No tienes tareas todavía.</td>
         </tr>
       `;
     }
@@ -160,28 +138,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
   async function load() {
     try {
-      const [tasks, users] = await Promise.all([apiGet("/tasks"), apiGet("/users")]);
-      computeMetrics(tasks, users);
-      renderTable(tasks, users);
+      myTasks = await apiGet(`/tasks?userId=${encodeURIComponent(session.id)}`);
+      computeMetrics();
+      renderTable();
     } catch (err) {
       console.error(err);
       tableBody.innerHTML = `
         <tr>
-          <td colspan="6" class="text-center text-danger py-4">
-            Error cargando datos. ¿JSON Server está corriendo en http://localhost:3000?
-          </td>
+          <td colspan="5" class="text-center text-danger py-4">Error cargando tareas. ¿JSON Server está corriendo?</td>
         </tr>
       `;
     }
   }
 
- 
+
   tableBody.addEventListener("change", async (e) => {
     const target = e.target;
     if (!(target instanceof HTMLSelectElement)) return;
 
     if (target.dataset.action === "status") {
       const id = target.dataset.id;
+      const task = myTasks.find((t) => String(t.id) === String(id));
+      if (!task) {
+        alert("No puedes modificar tareas que no son tuyas.");
+        return;
+      }
+
       try {
         await apiPatch(`/tasks/${id}`, { status: target.value });
         await load();
@@ -192,12 +174,19 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+
   tableBody.addEventListener("click", async (e) => {
     const btn = e.target.closest("button");
     if (!btn) return;
 
     if (btn.dataset.action === "delete") {
       const id = btn.dataset.id;
+      const task = myTasks.find((t) => String(t.id) === String(id));
+      if (!task) {
+        alert("No puedes eliminar tareas que no son tuyas.");
+        return;
+      }
+
       const ok = confirm("¿Eliminar esta tarea?");
       if (!ok) return;
 
